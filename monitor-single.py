@@ -58,41 +58,45 @@ count = 0
 time_init = time.time()
 while True:
     time_loop_start = time.time()
-    tl_new = api.user_timeline(screen_name = tmp["monitored_user"], count = 1, include_rts = False, tweet_mode = 'extended')[0]._json
-    if tl_new["id"] != tl["id"]:
-        username = tmp["monitored_user"]
-        twitter_name = tl_new["user"]["name"]
-        followers = tl_new["user"]["followers_count"]
-        status_id = tl_new["id_str"]
-        text = tl_new["full_text"]
-        avatar_url = tl_new["user"]["profile_image_url"]
-        embed = {
-            'username': f"{username} Monitor",
-            "avatar_url": avatar_url,
-            "embeds": [
-                {
-                    "author": {
-                        "name": f"{twitter_name} (@{username} // {followers} followers)",
-                        "url": f"https://twitter.com/{username}",
-                    },
-                    "title": "Link to Tweet",
-                    "url": f"https://twitter.com/{username}/status/{status_id}",
-                    "color": 2291967,
-                    'description': text
-                }
-            ]
-        }
-        if "media" in tl_new["entities"]:                                                                   #checks if an image exists
-            embed["embeds"][0]["image"] = {"url": tl_new["entities"]["media"][0]["media_url_https"]}
-        if len(tl_new["entities"]["user_mentions"]) > 0:                                                    #checks if any user is mentioned
-            mentions = {"name":"Mentioned users", "value":""}
-            for user in tl_new["entities"]["user_mentions"]:
-                mentions["value"] += f"[{user['name']}](https://twitter.com/{user['screen_name']}) "
-            embed["embeds"][0]["fields"] = []
-            embed["embeds"][0]["fields"].append(mentions)
-        requests.post(webhook, json = embed)
-        logging.info(f"Found a new post and posted it to discord.\nPOST ID: {status_id}")
-        tl = tl_new
+    try:
+        tl_new = api.user_timeline(screen_name = tmp["monitored_user"], count = 1, include_rts = False, tweet_mode = 'extended')[0]._json
+        if tl_new["id"] != tl["id"]:
+            username = tmp["monitored_user"]
+            twitter_name = tl_new["user"]["name"]
+            followers = tl_new["user"]["followers_count"]
+            status_id = tl_new["id_str"]
+            text = tl_new["full_text"]
+            avatar_url = tl_new["user"]["profile_image_url"]
+            embed = {
+                'username': f"{username} Monitor",
+                "avatar_url": avatar_url,
+                "embeds": [
+                    {
+                        "author": {
+                            "name": f"{twitter_name} (@{username} // {followers} followers)",
+                            "url": f"https://twitter.com/{username}",
+                        },
+                        "title": "Link to Tweet",
+                        "url": f"https://twitter.com/{username}/status/{status_id}",
+                        "color": 2291967,
+                        'description': text
+                    }
+                ]
+            }
+            if "media" in tl_new["entities"]:                                                                   #checks if an image exists
+                embed["embeds"][0]["image"] = {"url": tl_new["entities"]["media"][0]["media_url_https"]}
+            if len(tl_new["entities"]["user_mentions"]) > 0:                                                    #checks if any user is mentioned
+                mentions = {"name":"Mentioned users", "value":""}
+                for user in tl_new["entities"]["user_mentions"]:
+                    mentions["value"] += f"[{user['name']}](https://twitter.com/{user['screen_name']}) "
+                embed["embeds"][0]["fields"] = []
+                embed["embeds"][0]["fields"].append(mentions)
+            requests.post(webhook, json = embed)
+            logging.info(f"Found a new post and posted it to discord.\nPOST ID: {status_id}")
+            tl = tl_new
+    except Exception as e:
+        logging.error(f'Exception while fetching user tweet, callback: {e}')
+        pass
 
     time_loop_end = time.time()
     time_master = time_loop_end - time_init
