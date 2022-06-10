@@ -24,4 +24,8 @@ There will be two modes available, a single-api key one, which has optimised sle
 
 The main performance limiting factor of the cyclic mode is ping, where packets take a lot of time to get to Twitter's servers and back, therefore I recommend getting a server in San Francisco or similar. Discord server placement is a bit odd, but I have observed similar performance in all regions.
 
+### Example Embed
+
+![Example Embed](https://imgur.com/a/rRdD2ya)
+
 ### CYCLIC MODE IS NOT IMPLEMENTED YET
