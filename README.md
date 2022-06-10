@@ -26,6 +26,6 @@ The main performance limiting factor of the cyclic mode is ping, where packets t
 
 ### Example Embed
 
-![Example Embed](https://imgur.com/a/rRdD2ya)
+![Example Embed](https://i.imgur.com/dz4JLyI.png)
 
 ### CYCLIC MODE IS NOT IMPLEMENTED YET
