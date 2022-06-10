@@ -91,16 +91,16 @@ while True:
             embed["embeds"][0]["fields"] = []
             embed["embeds"][0]["fields"].append(mentions)
         requests.post(webhook, json = embed)
+        logging.info(f"Found a new post and posted it to discord.\nPOST ID: {status_id}")
         tl = tl_new
 
     time_loop_end = time.time()
     time_master = time_loop_end - time_init
     time_diff = time_loop_end - time_loop_start
-    sleep_time = (900 - time_master)/(900 - count) - time_diff
-    if time_master >= 900:
+    sleep_time = (900 - time_master)/(899 - count) - time_diff
+    if time_master >= 900 or count >= 898:
         time_init = time_loop_end
         count = 0
     if sleep_time >= 0:
         time.sleep(sleep_time)
     count += 1
-    logging.info(f"sleep time is {sleep_time} , time diff is {time_diff}, count is {count}, time elapsed is {time_master}")
