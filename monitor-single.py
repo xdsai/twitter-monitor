@@ -101,8 +101,8 @@ while True:
     time_loop_end = time.time()
     time_master = time_loop_end - time_init
     time_diff = time_loop_end - time_loop_start
-    sleep_time = (900 - time_master)/(899 - count) - time_diff
-    if time_master >= 900 or count >= 898:
+    sleep_time = (900 - time_master)/(898 - count) - time_diff
+    if time_master >= 900 or count >= 897:
         time_init = time_loop_end
         count = 0
     if sleep_time >= 0:
